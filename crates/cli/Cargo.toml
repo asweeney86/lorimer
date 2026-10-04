@@ -1,0 +1,17 @@
+[package]
+name = "lorimer-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+description = "Command-line disk usage scanner built on lorimer-core"
+authors.workspace = true
+repository.workspace = true
+homepage.workspace = true
+readme.workspace = true
+keywords.workspace = true
+categories.workspace = true
+default-run = "lorimer-cli"
+
+[dependencies]
+lorimer-core = { path = "../core" }

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Lorimer
+GenericName=Disk Usage Analyzer
+Comment=See what is taking up space on your disk
+Exec=lorimer
+Icon=lorimer
+Terminal=false
+Categories=Utility;System;Filesystem;
+Keywords=disk;usage;space;storage;sunburst;

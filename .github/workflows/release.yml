@@ -1,0 +1,98 @@
+name: Release
+
+# Pushing a tag such as v0.1.0 builds the downloads and attaches them to a draft release.
+# Review the draft on GitHub, then publish it.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  macos:
+    name: macOS universal app
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin, x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - name: Build both architectures
+        run: |
+          cargo build --release --locked -p lorimer --target aarch64-apple-darwin
+          cargo build --release --locked -p lorimer --target x86_64-apple-darwin
+      - name: Bundle
+        run: |
+          mkdir -p dist
+          lipo -create -output dist/lorimer \
+            target/aarch64-apple-darwin/release/lorimer \
+            target/x86_64-apple-darwin/release/lorimer
+          scripts/bundle-macos.sh dist/lorimer dist/Lorimer.app
+          ditto -c -k --keepParent dist/Lorimer.app "dist/Lorimer-${GITHUB_REF_NAME}-macos-universal.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: dist/*.zip
+
+  linux:
+    name: Linux x86_64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --release --locked --workspace
+      - name: Package
+        run: |
+          name="lorimer-${GITHUB_REF_NAME}-linux-x86_64"
+          mkdir -p "dist/$name"
+          cp target/release/lorimer target/release/lorimer-cli "dist/$name/"
+          cp assets/linux/lorimer.desktop LICENSE README.md "dist/$name/"
+          cp assets/icons/png/icon-256.png "dist/$name/lorimer.png"
+          tar -C dist -czf "dist/$name.tar.gz" "$name"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux
+          path: dist/*.tar.gz
+
+  windows:
+    name: Windows x86_64
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --release --locked --workspace
+      - name: Package
+        shell: pwsh
+        run: |
+          $name = "lorimer-$env:GITHUB_REF_NAME-windows-x86_64"
+          New-Item -ItemType Directory -Path "dist/$name" | Out-Null
+          Copy-Item target/release/lorimer.exe, target/release/lorimer-cli.exe, LICENSE, README.md -Destination "dist/$name"
+          Compress-Archive -Path "dist/$name" -DestinationPath "dist/$name.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: dist/*.zip
+
+  publish:
+    name: Draft release
+    needs: [macos, linux, windows]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: dist/*

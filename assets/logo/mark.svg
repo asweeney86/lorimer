@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="232 178 616 630" width="616" height="630">
+<title>Lorimer</title>
+<!-- The mark on its own, without the icon background. The grey hub reads on light and dark. -->
+<path d="M280,262 V492 A268,268 0 0 0 548,760 H742" fill="none" stroke="#409CFF" stroke-width="66" stroke-linecap="round"/>
+<path d="M360,226 V492 A188,188 0 0 0 548,680 H800" fill="none" stroke="#BF6EFA" stroke-width="66" stroke-linecap="round"/>
+<path d="M440,300 V492 A108,108 0 0 0 548,600 H690" fill="none" stroke="#FF6496" stroke-width="66" stroke-linecap="round"/>
+<circle cx="548" cy="492" r="40" fill="#9A9CA6"/>
+</svg>

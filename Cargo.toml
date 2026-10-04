@@ -1,0 +1,16 @@
+[workspace]
+members = ["crates/core", "crates/gui-iced", "crates/cli"]
+default-members = ["crates/gui-iced"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+rust-version = "1.88"
+authors = ["Andrew Sweeney"]
+repository = "https://github.com/asweeney86/lorimer"
+homepage = "https://github.com/asweeney86/lorimer"
+readme = "README.md"
+keywords = ["disk-usage", "sunburst", "filesystem", "visualization", "gui"]
+categories = ["filesystem", "visualization"]

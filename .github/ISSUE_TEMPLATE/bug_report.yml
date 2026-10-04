@@ -1,0 +1,37 @@
+name: Bug report
+description: Something is broken or reports the wrong numbers
+labels: [bug]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you did, what you expected, and what you saw instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: For a wrong size, the output of `lorimer-cli scan <path>` on the smallest folder that shows it helps most.
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Lorimer version
+      description: A release version or a commit hash.
+    validations:
+      required: true
+  - type: input
+    id: os
+    attributes:
+      label: Operating system
+      placeholder: macOS 15.2 on Apple silicon, Fedora 41 with GNOME on Wayland, or Windows 11
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else
+      description: Screenshots, the filesystem type, or roughly how many files were scanned.

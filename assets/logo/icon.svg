@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+<title>Lorimer</title>
+<!-- App icon master. The 824px body on a 1024px canvas follows the macOS icon grid. -->
+<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2A2B33"/><stop offset="1" stop-color="#131418"/></linearGradient></defs>
+<rect x="100" y="100" width="824" height="824" rx="186" fill="url(#bg)"/>
+<path d="M280,262 V492 A268,268 0 0 0 548,760 H742" fill="none" stroke="#409CFF" stroke-width="66" stroke-linecap="round"/>
+<path d="M360,226 V492 A188,188 0 0 0 548,680 H800" fill="none" stroke="#BF6EFA" stroke-width="66" stroke-linecap="round"/>
+<path d="M440,300 V492 A108,108 0 0 0 548,600 H690" fill="none" stroke="#FF6496" stroke-width="66" stroke-linecap="round"/>
+<circle cx="548" cy="492" r="40" fill="#F5F5F7"/>
+</svg>
