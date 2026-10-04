@@ -131,6 +131,24 @@ Lorimer is at version 0.1. The known gaps:
 - Linux gets less day-to-day use than macOS. The tests run on every platform in CI, but please [report](https://github.com/asweeney86/lorimer/issues) anything that looks off.
 - Windows support is new. It is built and tested in CI but has had little hands-on use, hardlinks are not deduplicated there, and `lorimer.exe` has no icon of its own in Explorer yet.
 
+## Similar tools
+
+Other tools that show disk usage as a picture. If Lorimer does not fit what you need, one of these may:
+
+| Tool                                                               | Platform       | View                 |
+| ------------------------------------------------------------------ | -------------- | -------------------- |
+| [DaisyDisk](https://daisydiskapp.com/)                             | macOS          | Sunburst             |
+| [Filelight](https://apps.kde.org/filelight/)                       | Linux, Windows | Sunburst             |
+| [GNOME Disk Usage Analyzer](https://apps.gnome.org/Baobab/)        | Linux          | Sunburst and treemap |
+| [Disk Inventory X](https://www.derlien.com/)                       | macOS          | Treemap              |
+| [GrandPerspective](https://grandperspectiv.sourceforge.net/)       | macOS          | Treemap              |
+| [WinDirStat](https://windirstat.net/)                              | Windows        | Treemap              |
+| [QDirStat](https://github.com/shundhammer/qdirstat)                | Linux          | Treemap              |
+| [SpaceSniffer](https://www.uderzo.it/main_products/space_sniffer/) | Windows        | Treemap              |
+| [ncdu](https://dev.yorhel.nl/ncdu)                                 | Terminal       | Text list            |
+
+Lorimer is an independent project and is not affiliated with any of them.
+
 ## Contributing
 
 Bug reports and pull requests are welcome. [CONTRIBUTING.md](CONTRIBUTING.md) covers setup and what a pull request needs, and [docs/architecture.md](docs/architecture.md) explains how the code is put together.
