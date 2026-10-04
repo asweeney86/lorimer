@@ -34,7 +34,7 @@ jobs:
             target/x86_64-apple-darwin/release/lorimer
           scripts/bundle-macos.sh dist/lorimer dist/Lorimer.app
           ditto -c -k --keepParent dist/Lorimer.app "dist/Lorimer-${GITHUB_REF_NAME}-macos-universal.zip"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: macos
           path: dist/*.zip
@@ -56,7 +56,7 @@ jobs:
           cp assets/linux/lorimer.desktop LICENSE README.md "dist/$name/"
           cp assets/icons/png/icon-256.png "dist/$name/lorimer.png"
           tar -C dist -czf "dist/$name.tar.gz" "$name"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: linux
           path: dist/*.tar.gz
@@ -77,7 +77,7 @@ jobs:
           New-Item -ItemType Directory -Path "dist/$name" | Out-Null
           Copy-Item target/release/lorimer.exe, target/release/lorimer-cli.exe, LICENSE, README.md -Destination "dist/$name"
           Compress-Archive -Path "dist/$name" -DestinationPath "dist/$name.zip"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: windows
           path: dist/*.zip
