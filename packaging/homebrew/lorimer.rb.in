@@ -1,0 +1,26 @@
+# Rendered by scripts/render-cask.sh and pushed to asweeney86/homebrew-tap when a release is
+# published. Edit this template, not the copy in the tap.
+cask "lorimer" do
+  version "@VERSION@"
+  sha256 "@SHA256@"
+
+  url "https://github.com/asweeney86/lorimer/releases/download/v#{version}/Lorimer-v#{version}-macos-universal.zip"
+  name "Lorimer"
+  desc "Disk usage visualizer"
+  homepage "https://github.com/asweeney86/lorimer"
+
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  depends_on :macos
+
+  app "Lorimer.app"
+  binary "#{appdir}/Lorimer.app/Contents/MacOS/lorimer-cli"
+
+  # The app is not notarized yet, so Gatekeeper would block the first launch.
+  postflight_steps do
+    run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{appdir}}/Lorimer.app"]
+  end
+end

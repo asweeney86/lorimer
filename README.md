@@ -16,6 +16,18 @@
   <img src="https://img.shields.io/badge/platforms-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg" alt="Runs on macOS, Linux, and Windows">
 </p>
 
+## Get started
+
+**macOS** (Apple silicon and Intel), with [Homebrew](https://brew.sh):
+
+```bash
+brew install --cask asweeney86/tap/lorimer
+```
+
+Then open Lorimer from Applications, or scan from the terminal with `lorimer-cli scan ~/Downloads`.
+
+**Linux and Windows:** download a build from the [releases page](https://github.com/asweeney86/lorimer/releases). See [Install](#install) for details and other options.
+
 ![Lorimer showing a home folder as a sunburst chart, with the largest folders listed in a sidebar](docs/screenshot.png)
 
 Lorimer scans a folder and draws it as a sunburst. The folder you scanned is the centre, each ring is one level deeper, and the width of every segment is its share of the space. The big things are obvious at a glance, and you can click into any of them.
@@ -31,11 +43,26 @@ Lorimer scans a folder and draws it as a sunburst. The folder you scanned is the
 
 ## Install
 
+### Homebrew (macOS)
+
+```bash
+brew install --cask asweeney86/tap/lorimer
+```
+
+This installs `Lorimer.app` in Applications and puts `lorimer-cli` on your PATH. The tap updates automatically with each release.
+
+```bash
+brew upgrade --cask lorimer      # update to the latest release
+brew uninstall --cask lorimer    # remove the app and lorimer-cli
+```
+
+The app is not notarized yet, so the cask removes the quarantine flag from `Lorimer.app` after installing it. Without that, macOS would block the first launch. If you would rather approve the app yourself, use the download below.
+
 ### Download
 
 Builds for each version are on the [releases page](https://github.com/asweeney86/lorimer/releases).
 
-- **macOS** (Apple silicon and Intel): download `Lorimer-<version>-macos-universal.zip`, unzip it, and move `Lorimer.app` to Applications. The app is not notarized yet, so macOS blocks the first launch. Allow it under System Settings → Privacy & Security, or run `xattr -dr com.apple.quarantine /Applications/Lorimer.app`.
+- **macOS** (Apple silicon and Intel): download `Lorimer-<version>-macos-universal.zip`, unzip it, and move `Lorimer.app` to Applications. The command-line tool is inside the app at `Lorimer.app/Contents/MacOS/lorimer-cli`. The app is not notarized yet, so macOS blocks the first launch. Allow it under System Settings → Privacy & Security, or run `xattr -dr com.apple.quarantine /Applications/Lorimer.app`.
 - **Linux** (x86_64): download `lorimer-<version>-linux-x86_64.tar.gz`. It contains the `lorimer` and `lorimer-cli` binaries, an icon, and a `.desktop` file.
 - **Windows** (x86_64): download `lorimer-<version>-windows-x86_64.zip` and run `lorimer.exe`. The build is not signed, so SmartScreen may warn on first launch; choose More info, then Run anyway.
 
@@ -94,7 +121,7 @@ Largest files:
       ...
 ```
 
-`lorimer-cli metadata <path>` prints size, dates, and permissions for a single file or folder. From a checkout, run it with `cargo run -p lorimer-cli -- scan <path>`.
+`lorimer-cli metadata <path>` prints size, dates, and permissions for a single file or folder. The Homebrew install puts `lorimer-cli` on your PATH, and the Linux and Windows downloads include it. From a checkout, run it with `cargo run -p lorimer-cli -- scan <path>`.
 
 ## What the numbers mean
 

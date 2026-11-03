@@ -1,0 +1,79 @@
+name: Homebrew
+
+# Publishing a release (not pushing the tag) updates the cask in asweeney86/homebrew-tap,
+# because the release assets only become downloadable once the draft is published.
+# Needs the HOMEBREW_TAP_TOKEN secret: a token with contents write access to the tap.
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to publish to the tap, e.g. v0.1.1
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: homebrew-tap
+
+jobs:
+  update-tap:
+    name: Update tap
+    if: github.event_name == 'workflow_dispatch' || !github.event.release.prerelease
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.release.tag_name || inputs.tag }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: lorimer
+      - uses: actions/checkout@v7
+        with:
+          repository: asweeney86/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: tap
+      - name: Download the macOS release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p dist
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --dir dist \
+            --pattern "Lorimer-$TAG-macos-universal.zip"
+      - name: Render the cask
+        run: |
+          mkdir -p tap/Casks
+          lorimer/scripts/render-cask.sh "${TAG#v}" "dist/Lorimer-$TAG-macos-universal.zip" \
+            > tap/Casks/lorimer.rb
+          cat tap/Casks/lorimer.rb
+      - name: Push to the tap
+        working-directory: tap
+        run: |
+          git add Casks/lorimer.rb
+          if git diff --cached --quiet; then
+            echo "Cask already up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "lorimer ${TAG#v}"
+          git push
+
+  verify:
+    name: Install from the tap
+    needs: update-tap
+    runs-on: macos-latest
+    steps:
+      - name: Install
+        run: brew install --cask asweeney86/tap/lorimer
+      - name: Check the app and the command-line tool
+        run: |
+          test -d /Applications/Lorimer.app
+          if xattr -p com.apple.quarantine /Applications/Lorimer.app 2>/dev/null; then
+            echo "Lorimer.app still carries the quarantine flag" >&2
+            exit 1
+          fi
+          lorimer-cli scan "$(mktemp -d)"
+      - name: Uninstall
+        run: brew uninstall --cask lorimer
