@@ -24,15 +24,19 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - name: Build both architectures
         run: |
-          cargo build --release --locked -p lorimer --target aarch64-apple-darwin
-          cargo build --release --locked -p lorimer --target x86_64-apple-darwin
+          cargo build --release --locked -p lorimer -p lorimer-cli --target aarch64-apple-darwin
+          cargo build --release --locked -p lorimer -p lorimer-cli --target x86_64-apple-darwin
       - name: Bundle
         run: |
           mkdir -p dist
-          lipo -create -output dist/lorimer \
-            target/aarch64-apple-darwin/release/lorimer \
-            target/x86_64-apple-darwin/release/lorimer
-          scripts/bundle-macos.sh dist/lorimer dist/Lorimer.app
+          for bin in lorimer lorimer-cli; do
+            lipo -create -output "dist/$bin" \
+              "target/aarch64-apple-darwin/release/$bin" \
+              "target/x86_64-apple-darwin/release/$bin"
+          done
+          scripts/bundle-macos.sh dist/lorimer dist/Lorimer.app dist/lorimer-cli
+          # The Homebrew cask links this binary onto PATH, so the release must not ship without it.
+          dist/Lorimer.app/Contents/MacOS/lorimer-cli scan "$(mktemp -d)"
           ditto -c -k --keepParent dist/Lorimer.app "dist/Lorimer-${GITHUB_REF_NAME}-macos-universal.zip"
       - uses: actions/upload-artifact@v7
         with:

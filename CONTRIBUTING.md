@@ -40,6 +40,7 @@ Then check your change against these expectations:
 | `crates/gui-iced` | The desktop app, built with [iced](https://iced.rs). |
 | `crates/cli` | Command-line frontend and the `scan-bench` benchmark. |
 | `assets` | Logo sources and generated icons. |
+| `packaging/homebrew` | Template for the Homebrew cask, filled in by CI on each release. |
 | `docs/architecture.md` | Design rules and the reasoning behind them. |
 
 The rules that keep these pieces separate (for example, the core crate never depends on a GUI type) are written down in [docs/architecture.md](docs/architecture.md).
@@ -54,6 +55,15 @@ LORIMER_AUTOSCAN=/path/to/empty/dir/Users/alex cargo run --release
 ```
 
 The files in the demo tree are sparse, so the tree reports hundreds of gigabytes while using almost no disk space.
+
+## Releasing
+
+1. Bump `version` in the root `Cargo.toml`, move the `Unreleased` entries in `CHANGELOG.md` under the new version, and merge.
+2. Push a tag such as `v0.1.1`. The Release workflow builds the downloads and attaches them to a draft release.
+3. Review the draft on GitHub and publish it.
+4. Publishing runs the Homebrew workflow. It renders `packaging/homebrew/lorimer.rb.in` with the new version and checksum, pushes it to [asweeney86/homebrew-tap](https://github.com/asweeney86/homebrew-tap), and then installs from the tap on a clean macOS runner to check it.
+
+The Homebrew workflow needs the `HOMEBREW_TAP_TOKEN` repository secret: a fine-grained token with read and write access to the contents of the tap repository only. If the workflow fails, or the secret was missing, re-run it from the Actions tab with "Run workflow" and the release tag. Do not edit the cask in the tap by hand; the next release overwrites it.
 
 ## Reporting bugs
 
