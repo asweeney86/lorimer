@@ -49,7 +49,7 @@ Lorimer scans a folder and draws it as a sunburst. The folder you scanned is the
 brew install --cask asweeney86/tap/lorimer
 ```
 
-This installs `Lorimer.app` in Applications and puts `lorimer-cli` on your PATH. The tap updates automatically with each release.
+This installs `Lorimer.app` in Applications and puts `lorimer-cli` on your PATH. The tap picks up each release within an hour.
 
 ```bash
 brew upgrade --cask lorimer      # update to the latest release

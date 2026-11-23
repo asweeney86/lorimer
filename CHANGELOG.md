@@ -7,7 +7,7 @@ All notable user-visible changes to Lorimer are recorded here.
 ## 0.1.1
 
 - The logo morphs into continuously spinning rings while a scan is running.
-- Install on macOS with Homebrew: `brew install --cask asweeney86/tap/lorimer`. The cask installs the app and puts `lorimer-cli` on your PATH, and CI updates it on every release.
+- Install on macOS with Homebrew: `brew install --cask asweeney86/tap/lorimer`. The cask installs the app and puts `lorimer-cli` on your PATH, and the tap picks up each release automatically.
 - The macOS download now includes `lorimer-cli` inside the app bundle, at `Lorimer.app/Contents/MacOS/lorimer-cli`.
 
 ## 0.1.0

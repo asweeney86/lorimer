@@ -61,9 +61,7 @@ The files in the demo tree are sparse, so the tree reports hundreds of gigabytes
 1. Bump `version` in the root `Cargo.toml`, move the `Unreleased` entries in `CHANGELOG.md` under the new version, and merge.
 2. Push a tag such as `v0.1.1`. The Release workflow builds the downloads and attaches them to a draft release.
 3. Review the draft on GitHub and publish it.
-4. Publishing runs the Homebrew workflow. It renders `packaging/homebrew/lorimer.rb.in` with the new version and checksum, pushes it to [asweeney86/homebrew-tap](https://github.com/asweeney86/homebrew-tap), and then installs from the tap on a clean macOS runner to check it.
-
-The Homebrew workflow needs the `HOMEBREW_TAP_TOKEN` repository secret: a fine-grained token with read and write access to the contents of the tap repository only. If the workflow fails, or the secret was missing, re-run it from the Actions tab with "Run workflow" and the release tag. Do not edit the cask in the tap by hand; the next release overwrites it.
+4. The Release workflow also renders `packaging/homebrew/lorimer.rb.in` with the new version and checksum and attaches it to the release as `lorimer.rb`. The [asweeney86/homebrew-tap](https://github.com/asweeney86/homebrew-tap) repository checks the latest release every hour, commits the new cask, and installs it on a clean macOS runner to check it. No token is needed. To skip the wait, run its "Update cask" workflow from the Actions tab. Do not edit the cask in the tap by hand; the next release overwrites it.
 
 ## Reporting bugs
 
