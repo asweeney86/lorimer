@@ -91,10 +91,17 @@ jobs:
     needs: [macos, linux, windows]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v7
       - uses: actions/download-artifact@v8
         with:
           path: dist
           merge-multiple: true
+      - name: Render the Homebrew cask
+        # The tap polls for lorimer.rb on the latest release, so it needs no token to update.
+        run: |
+          scripts/render-cask.sh "${GITHUB_REF_NAME#v}" "dist/Lorimer-${GITHUB_REF_NAME}-macos-universal.zip" \
+            > dist/lorimer.rb
+          cat dist/lorimer.rb
       - uses: softprops/action-gh-release@v3
         with:
           draft: true
